@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Influencers</title>
+</head>
+<body>
+    <h1>Influencers</h1>
+    <ul>
+        {% for influencer in influencers %}
+            <li>
+                <strong>{{ influencer.name }}</strong><br>
+                <em>{{ influencer.bio }}</em>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

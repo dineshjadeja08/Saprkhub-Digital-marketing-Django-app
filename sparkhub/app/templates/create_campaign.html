@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Campaign</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Create a New Campaign</h1>
+    <form method="post">
+        {% csrf_token %}  <!-- Django's protection against CSRF attacks -->
+        {{ form.as_p }}  <!-- Renders the form with each field wrapped in <p> tags -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</body>
+</html>

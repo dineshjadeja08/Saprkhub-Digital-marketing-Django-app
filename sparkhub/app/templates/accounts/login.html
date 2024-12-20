@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+    <h2 style="color: red; text-align: center;">Sign In</h2>
+    <form method="post" style="max-width: 400px; margin: 20px auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="width: 100%; padding: 10px; background-color: blue; color: white; border: none; border-radius: 5px;">Sign In</button>
+    </form>
+    <p style="text-align: center;">Don't have an account? <a href="{% url 'account_signup' %}" style="color: blue;">Sign up</a></p>
+{% endblock %}

@@ -1,12 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from .models import Influencer, Brand, Campaign
-from django.contrib.auth import logout
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from .models import Influencer, Brand, Campaign
 from .forms import CampaignForm
 
 def home(request):
@@ -17,33 +15,29 @@ def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user)
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('login')  # Redirect to login page after successful sign-up
+            messages.success(request, f'Account created successfully! Welcome, {username}!')
+            return redirect('dashboard')
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = UserCreationForm()
 
-    return render(request, 'accounts/login.html', {'form': form})
+    return render(request, 'accounts/signup.html', {'form': form})
 
 # Sign-In View
 def signin(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back, {username}!')
-                return redirect('dashboard/home.html')  # Redirect to the home page or dashboard
-            else:
-                messages.error(request, 'Invalid username or password.')
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f'Welcome back, {user.username}!')
+            return redirect('dashboard')
         else:
-            messages.error(request, 'Invalid form submission.')
+            messages.error(request, 'Invalid username or password.')
     else:
         form = AuthenticationForm()
 
@@ -61,19 +55,19 @@ def dashboard(request):
         {
             'title': 'Find Relevant Influencers',
             'description': 'Discover the power of finding "Relevant Influencers" with our platform...',
-            'button_text': 'Discover Influencer',
+            'button_text': 'Discover Influencers',
             'link': 'discover_influencers',
             'progress': 60,  # Example progress (in %)
         },
         {
-            'title': 'Promote Your Brand?',
+            'title': 'Promote Your Brand',
             'description': 'Elevate your brand\'s presence and reach with our expert promotional services...',
             'button_text': 'Create Campaign',
             'link': 'create_campaign',
             'progress': 80,
         },
         {
-            'title': 'Track & Analyze Campaign',
+            'title': 'Track & Analyze Campaigns',
             'description': 'Gain valuable insights and measure the success of your campaigns...',
             'button_text': 'Generate Report',
             'link': 'generate_report',
@@ -102,20 +96,32 @@ def dashboard(request):
     })
 
 def discover_influencers(request):
-    return render(request, 'dashboard/placeholder.html', {'title': 'Discover Influencers'})
+    influencers = Influencer.objects.all()
+    return render(request, 'dashboard/discover_influencers.html', {
+        'title': 'Discover Influencers',
+        'influencers': influencers,
+    })
 
 def create_campaign(request):
     if request.method == 'POST':  # If the form is submitted
         form = CampaignForm(request.POST)
         if form.is_valid():  # Check if the data is valid
             form.save()  # Save the form data to the database
+            messages.success(request, 'Campaign created successfully!')
             return redirect('dashboard')  # Redirect to the dashboard
+        else:
+            messages.error(request, 'Please correct the errors below.')
     else:
         form = CampaignForm()  # Display an empty form if the page is visited without submission
+
     return render(request, 'create_campaign.html', {'form': form})
 
 def generate_report(request):
-    return render(request, 'dashboard/placeholder.html', {'title': 'Generate Report'})
+    campaigns = Campaign.objects.all()
+    return render(request, 'dashboard/generate_report.html', {
+        'title': 'Generate Report',
+        'campaigns': campaigns,
+    })
 
 def influencer_list(request):
     influencers = Influencer.objects.all()

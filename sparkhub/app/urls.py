@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -14,4 +14,3 @@ urlpatterns = [
     path('create-campaign/', views.create_campaign, name='create_campaign'),
     path('generate-report/', views.generate_report, name='generate_report'),
 ]
-

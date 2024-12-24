@@ -133,6 +133,8 @@ Sign up page ---
 ![image](https://github.com/user-attachments/assets/8b144647-ff3f-4f6e-b57e-6d9e314cd617)
 Dashboard ----
 ![image](https://github.com/user-attachments/assets/8512cb25-887f-40c4-86fd-2a8a13cecaf4)
+Create a campaign----
+![image](https://github.com/user-attachments/assets/a1fb9c05-57e6-47b0-a694-f7d039564d0e)
 Logout page----
 ![image](https://github.com/user-attachments/assets/b5eb62bd-4fb7-4298-b940-d212d3429a64)
->>>>>>> 12516d6b0bcb02f63d0f5fab14c14f106e64459b
+
